@@ -41,8 +41,9 @@
     {
       "env_variable": "AFFINE_POSTGRES_PASSWORD",
       "label": "Affine postgres password",
-      "type": "random",
-      "min": 32
+      "type": "password",
+      "required": true,
+      "min": 6
     }
   ],
   "supported_architectures": ["arm64", "amd64"],
