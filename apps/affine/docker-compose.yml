@@ -2,6 +2,8 @@ services:
   affine:
     image: ghcr.io/toeverything/affine-graphql:stable
     container_name: affine_server
+    command:
+      ['sh', '-c', 'node ./scripts/self-host-predeploy && node ./dist/main.js']
     ports:
       - ${APP_PORT}:3010
     depends_on:
@@ -30,33 +32,6 @@ services:
       - TELEMETRY_ENABLE=${AFFINE_TELEMETRY_ENABLE}
       - AFFINE_INDEXER_ENABLED=false
       - AFFINE_SERVER_EXTERNAL_URL=https://projects.int.hotcinnamon.ing
-    networks:
-      - tipi_main_network
-    labels:
-      runtipi.managed: true
-
-  affine_migration:
-    image: ghcr.io/toeverything/affine:stable
-    container_name: affine_migration_job
-    volumes:
-      # custom configurations
-      - ${APP_DATA_DIR}/data/config:/root/.affine/config
-      - ${APP_DATA_DIR}/data/storage:/root/.affine/storage
-    command: ['sh', '-c', 'node ./scripts/self-host-predeploy.js']
-    environment:
-      - REDIS_SERVER_HOST=redis
-      - DATABASE_URL=postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine
-      - AFFINE_INDEXER_ENABLED=false
-      - AFFINE_ADMIN_EMAIL=${AFFINE_ADMIN_EMAIL}
-      - AFFINE_ADMIN_PASSWORD=${AFFINE_ADMIN_PASSWORD}
-      - TELEMETRY_ENABLE=${AFFINE_TELEMETRY_ENABLE}
-      - AFFINE_INDEXER_ENABLED=false
-      - AFFINE_SERVER_EXTERNAL_URL=https://projects.int.hotcinnamon.ing
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     networks:
       - tipi_main_network
     labels:
