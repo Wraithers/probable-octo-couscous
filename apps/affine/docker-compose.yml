@@ -11,8 +11,6 @@ services:
         condition: service_healthy
       affine-postgres:
         condition: service_healthy
-      affine_migration:
-        condition: service_completed_successfully
     volumes:
       # Custom configurations
       - ${APP_DATA_DIR}/data/config:/root/.affine/config
