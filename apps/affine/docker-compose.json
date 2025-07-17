@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "affine_server",
-      "image": "ghcr.io/toeverything/affine-graphql:stable-c5da8dd",
+      "image": "ghcr.io/toeverything/affine-graphql:stable-e043ecf",
       "isMain": true,
       "command": ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"],
       "environment": {

@@ -1,6 +1,6 @@
 services:
   affine:
-    image: ghcr.io/toeverything/affine-graphql:stable-c5da8dd
+    image: ghcr.io/toeverything/affine-graphql:stable-e043ecf
     container_name: affine_server
     ports:
       - ${APP_PORT}:3010
