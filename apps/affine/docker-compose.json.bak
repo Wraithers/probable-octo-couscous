@@ -71,7 +71,7 @@
         "retries": 5
       },
       "environment": {
-        "POSTGRES_USER": "tipi",
+        "POSTGRES_USER": "affine",
         "POSTGRES_PASSWORD": "${AFFINE_POSTGRES_PASSWORD}",
         "POSTGRES_DB": "affine"
       }
