@@ -3,6 +3,8 @@
     {
       "name": "affine_server",
       "image": "ghcr.io/toeverything/affine-graphql:stable",
+      "isMain": true,
+      "command": ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"],
       "environment": {
         "AFFINE_CONFIG_PATH": "/root/.affine/config",
         "REDIS_SERVER_HOST": "affine-redis",
@@ -41,47 +43,6 @@
           "condition": "service_healthy"
         },
         "affine-postgres": {
-          "condition": "service_healthy"
-        },
-        "affine-migration": {
-          "condition": "service_completed_successfully"
-        }
-      }
-    },
-    {
-      "name": "affine-migration",
-      "image": "ghcr.io/toeverything/affine:stable",
-      "command": [ "sh", "-c", "node ./scripts/self-host-predeploy.js"],
-      "environment": {
-        "REDIS_SERVER_HOST": "redis",
-        "DATABASE_URL": "postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine",
-        "AFFINE_INDEXER_ENABLED": "false",
-        "AFFINE_ADMIN_EMAIL": "${AFFINE_ADMIN_EMAIL}",
-        "AFFINE_ADMIN_PASSWORD": "${AFFINE_ADMIN_PASSWORD}",
-        "TELEMETRY_ENABLE": "${AFFINE_TELEMETRY_ENABLE}",
-        "AFFINE_SERVER_EXTERNAL_URL": "https://projects.int.hotcinnamon.ing"
-      },
-      "volumes": [
-        {
-          "hostPath": "${APP_DATA_DIR}/data/config",
-          "containerPath": "/root/.affine/config",
-          "readOnly": false,
-          "shared": false,
-          "private": false
-        },
-        {
-          "hostPath": "${APP_DATA_DIR}/data/storage",
-          "containerPath": "/root/.affine/storage",
-          "readOnly": false,
-          "shared": false,
-          "private": false
-        }
-      ],
-      "dependsOn": {
-        "affine-postgres": {
-          "condition": "service_healthy"
-        },
-        "affine-redis": {
           "condition": "service_healthy"
         }
       }
