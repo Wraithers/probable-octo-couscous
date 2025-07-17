@@ -43,13 +43,13 @@
         "affine-postgres": {
           "condition": "service_healthy"
         },
-        "affine_migration": {
+        "affine-migration": {
           "condition": "service_completed_successfully"
         }
       }
     },
     {
-      "name": "affine_migration",
+      "name": "affine-migration",
       "image": "ghcr.io/toeverything/affine:stable}",
       "command": [
         "sh",
@@ -82,10 +82,10 @@
         }
       ],
       "dependsOn": {
-        "postgres": {
+        "affine-postgres": {
           "condition": "service_healthy"
         },
-        "redis": {
+        "affine-redis": {
           "condition": "service_healthy"
         }
       }
