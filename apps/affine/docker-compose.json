@@ -1,0 +1,138 @@
+{
+  "services": [
+    {
+      "name": "affine_server",
+      "image": "ghcr.io/toeverything/affine-graphql:stable",
+      "environment": {
+        "AFFINE_CONFIG_PATH": "/root/.affine/config",
+        "REDIS_SERVER_HOST": "affine-redis",
+        "DATABASE_URL": "postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine",
+        "AFFINE_ADMIN_EMAIL": "${AFFINE_ADMIN_EMAIL}",
+        "AFFINE_ADMIN_PASSWORD": "${AFFINE_ADMIN_PASSWORD}",
+        "TELEMETRY_ENABLE": "${AFFINE_TELEMETRY_ENABLE}",
+        "AFFINE_INDEXER_ENABLED": "false",
+        "AFFINE_SERVER_EXTERNAL_URL": "https://projects.int.hotcinnamon.ing"
+      },
+      "internalPort": 3010,
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/config",
+          "containerPath": "/root/.affine/config",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/storage",
+          "containerPath": "/root/.affine/storage",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "logging": {
+        "driver": "json-file",
+        "options": {
+          "max-size": "1000m"
+        }
+      },
+      "dependsOn": {
+        "affine-redis": {
+          "condition": "service_healthy"
+        },
+        "affine-postgres": {
+          "condition": "service_healthy"
+        },
+        "affine_migration": {
+          "condition": "service_completed_successfully"
+        }
+      }
+    },
+    {
+      "name": "affine_migration_job",
+      "image": "ghcr.io/toeverything/affine:stable}",
+      "command": [
+        "sh",
+        "-c",
+        "node ./scripts/self-host-predeploy.js"
+      ],
+      "environment": {
+        "REDIS_SERVER_HOST": "redis",
+        "DATABASE_URL": "postgresql://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE:-affine}",
+        "AFFINE_INDEXER_ENABLED": "false",
+        "AFFINE_ADMIN_EMAIL": "${AFFINE_ADMIN_EMAIL}",
+        "AFFINE_ADMIN_PASSWORD": "${AFFINE_ADMIN_PASSWORD}",
+        "TELEMETRY_ENABLE": "${AFFINE_TELEMETRY_ENABLE}",
+        "AFFINE_SERVER_EXTERNAL_URL": "https://projects.int.hotcinnamon.ing"
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/config",
+          "containerPath": "/root/.affine/config",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        },
+        {
+          "hostPath": "${APP_DATA_DIR}/data/storage",
+          "containerPath": "/root/.affine/storage",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "dependsOn": {
+        "postgres": {
+          "condition": "service_healthy"
+        },
+        "redis": {
+          "condition": "service_healthy"
+        }
+      }
+    },
+    {
+      "name": "affine-redis",
+      "image": "redis",
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/redis",
+          "containerPath": "/data",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "healthCheck": {
+        "test": "CMD redis-cli --raw incr ping",
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5
+      }
+    },
+    {
+      "name": "affine-postgres",
+      "image": "pgvector/pgvector:pg16",
+      "environment": {
+        "POSTGRES_USER": "affine",
+        "POSTGRES_PASSWORD": "${AFFINE_POSTGRES_PASSWORD}",
+        "POSTGRES_DB": "affine",
+        "POSTGRES_INITDB_ARGS": "--data-checksums"
+      },
+      "volumes": [
+        {
+          "hostPath": "${APP_DATA_DIR}/data/postgres",
+          "containerPath": "/var/lib/postgresql/data",
+          "readOnly": false,
+          "shared": false,
+          "private": false
+        }
+      ],
+      "healthCheck": {
+        "test": "CMD pg_isready -d postgres://affine:affine@affine-postgres:5432/affine",
+        "interval": "10s",
+        "timeout": "5s",
+        "retries": 5
+      }
+    }
+  ]
+}
