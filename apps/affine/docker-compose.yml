@@ -37,7 +37,7 @@ services:
 
   affine_migration:
     image: ghcr.io/toeverything/affine:stable}
-    container_name: affine_migration_job
+    container_name: affine_migration
     volumes:
       # custom configurations
       - ${APP_DATA_DIR}/data/config:/root/.affine/config
