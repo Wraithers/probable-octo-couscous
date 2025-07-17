@@ -51,11 +51,7 @@
     {
       "name": "affine-migration",
       "image": "ghcr.io/toeverything/affine:stable",
-      "command": [
-        "sh",
-        "-c",
-        "node ./scripts/self-host-predeploy.js"
-      ],
+      "command": [ "sh", "-c", "node ./scripts/self-host-predeploy.js"],
       "environment": {
         "REDIS_SERVER_HOST": "redis",
         "DATABASE_URL": "postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine",
@@ -103,7 +99,7 @@
         }
       ],
       "healthCheck": {
-        "test": "CMD redis-cli --raw incr ping",
+        "test": "redis-cli PING || exit 1",
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
@@ -128,7 +124,7 @@
         }
       ],
       "healthCheck": {
-        "test": "CMD pg_isready -d postgres://affine:affine@affine-postgres:5432/affine",
+        "test": "pg_isready -U affine -d affine || exit 1",
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
