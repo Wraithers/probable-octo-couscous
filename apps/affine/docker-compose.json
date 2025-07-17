@@ -49,7 +49,7 @@
       }
     },
     {
-      "name": "affine_migration_job",
+      "name": "affine_migration",
       "image": "ghcr.io/toeverything/affine:stable}",
       "command": [
         "sh",
