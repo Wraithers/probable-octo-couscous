@@ -4,6 +4,7 @@ services:
     container_name: affine_server
     ports:
       - ${APP_PORT}:3010
+    command: ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"]
     depends_on:
       affine-redis:
         condition: service_healthy
@@ -20,6 +21,8 @@ services:
         max-size: "1000m"
     restart: unless-stopped
     environment:
+      - NODE_OPTIONS="--import=./scripts/register.js"
+      - NODE_ENV=production
       - AFFINE_CONFIG_PATH=/root/.affine/config
       - REDIS_SERVER_HOST=affine-redis
       - DATABASE_URL=postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine

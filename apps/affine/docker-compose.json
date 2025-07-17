@@ -4,7 +4,10 @@
       "name": "affine_server",
       "image": "ghcr.io/toeverything/affine-graphql:stable-c5da8dd",
       "isMain": true,
+      "command": ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"],
       "environment": {
+        "NODE_OPTIONS": "--import=./scripts/register.js",
+        "NODE_ENV": "production",
         "AFFINE_CONFIG_PATH": "/root/.affine/config",
         "REDIS_SERVER_HOST": "affine-redis",
         "DATABASE_URL": "postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine",
@@ -59,7 +62,7 @@
         }
       ],
       "healthCheck": {
-        "test": "redis-cli PING || exit 1",
+        "test": "redis-cli --raw incr ping || exit 1",
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
@@ -84,7 +87,7 @@
         }
       ],
       "healthCheck": {
-        "test": "pg_isready -U affine -d affine || exit 1",
+        "test": "pg_isready -d postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine || exit 1",
         "interval": "10s",
         "timeout": "5s",
         "retries": 5
