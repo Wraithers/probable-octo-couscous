@@ -50,7 +50,7 @@
     },
     {
       "name": "affine-migration",
-      "image": "ghcr.io/toeverything/affine:stable}",
+      "image": "ghcr.io/toeverything/affine:stable",
       "command": [
         "sh",
         "-c",
@@ -58,7 +58,7 @@
       ],
       "environment": {
         "REDIS_SERVER_HOST": "redis",
-        "DATABASE_URL": "postgresql://${DB_USERNAME}:${DB_PASSWORD}@postgres:5432/${DB_DATABASE:-affine}",
+        "DATABASE_URL": "postgresql://affine:${AFFINE_POSTGRES_PASSWORD}@affine-postgres:5432/affine",
         "AFFINE_INDEXER_ENABLED": "false",
         "AFFINE_ADMIN_EMAIL": "${AFFINE_ADMIN_EMAIL}",
         "AFFINE_ADMIN_PASSWORD": "${AFFINE_ADMIN_PASSWORD}",
