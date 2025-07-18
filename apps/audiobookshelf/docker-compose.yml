@@ -1,7 +1,7 @@
 services:
   audiobookshelf:
     container_name: audiobookshelf
-    image: ghcr.io/advplyr/audiobookshelf:2.20.0
+    image: ghcr.io/advplyr/audiobookshelf:2.26.1
     restart: unless-stopped
     user: "1000:1000"
     ports:
