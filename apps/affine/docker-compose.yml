@@ -1,10 +1,10 @@
 services:
   affine:
-    image: ghcr.io/toeverything/affine-graphql:stable-e043ecf
+    image: ghcr.io/toeverything/affine-graphql:stable-e98f035
     container_name: affine_server
     ports:
       - ${APP_PORT}:3010
-    command: ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"]
+    command: ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/main.js"]
     depends_on:
       affine-redis:
         condition: service_healthy
@@ -21,7 +21,7 @@ services:
         max-size: "1000m"
     restart: unless-stopped
     environment:
-      - NODE_OPTIONS="--import=./scripts/register.js"
+      #- NODE_OPTIONS="--import=./scripts/register.js"
       - NODE_ENV=production
       - AFFINE_CONFIG_PATH=/root/.affine/config
       - REDIS_SERVER_HOST=affine-redis

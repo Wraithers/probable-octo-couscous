@@ -2,11 +2,10 @@
   "services": [
     {
       "name": "affine_server",
-      "image": "ghcr.io/toeverything/affine-graphql:stable-e043ecf",
+      "image": "ghcr.io/toeverything/affine-graphql:stable-e98f035",
       "isMain": true,
-      "command": ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/index.js"],
+      "command": ["sh", "-c", "node ./scripts/self-host-predeploy && node ./dist/main.js"],
       "environment": {
-        "NODE_OPTIONS": "--import=./scripts/register.js",
         "NODE_ENV": "production",
         "AFFINE_CONFIG_PATH": "/root/.affine/config",
         "REDIS_SERVER_HOST": "affine-redis",
