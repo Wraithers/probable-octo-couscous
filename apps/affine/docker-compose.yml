@@ -1,6 +1,6 @@
 services:
   affine:
-    image: ghcr.io/toeverything/affine-graphql:stable-e98f035
+    image: ghcr.io/toeverything/affine:0.23.0
     container_name: affine_server
     ports:
       - ${APP_PORT}:3010
@@ -30,7 +30,7 @@ services:
       - AFFINE_ADMIN_PASSWORD=${AFFINE_ADMIN_PASSWORD}
       - TELEMETRY_ENABLE=${AFFINE_TELEMETRY_ENABLE}
       - AFFINE_INDEXER_ENABLED=false
-      - AFFINE_SERVER_EXTERNAL_URL=https://projects.int.hotcinnamon.ing
+      - AFFINE_SERVER_EXTERNAL_URL=https://projects.handcrafted.systems
     networks:
       - tipi_main_network
     labels:
