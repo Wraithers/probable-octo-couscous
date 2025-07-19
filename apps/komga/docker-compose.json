@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "komga",
-      "image": "ghcr.io/gotson/komga:1.22.0",
+      "image": "ghcr.io/gotson/komga:1.13.0",
       "isMain": true,
       "internalPort": 25600,
       "environment": {
@@ -21,8 +21,8 @@
           "hostPath": "${ROOT_FOLDER_HOST}/media",
           "containerPath": "/media"
         }
-      ]
+      ],
+      "user": "1000:1000"
     }
-  ],
-  "$schema": "../dynamic-compose-schema.json"
+  ]
 }
