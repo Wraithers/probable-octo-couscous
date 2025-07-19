@@ -2,7 +2,7 @@
   "services": [
     {
       "name": "immich",
-      "image": "ghcr.io/immich-app/immich-server:v1.126.1",
+      "image": "ghcr.io/immich-app/immich-server:v1.133.0",
       "isMain": true,
       "internalPort": 2283,
       "environment": {
@@ -32,7 +32,7 @@
     },
     {
       "name": "immich-machine-learning",
-      "image": "ghcr.io/immich-app/immich-machine-learning:v1.125.7",
+      "image": "ghcr.io/immich-app/immich-machine-learning:v1.133.0",
       "environment": {
         "NODE_ENV": "production",
         "DB_HOSTNAME": "immich-db",
@@ -66,39 +66,20 @@
     },
     {
       "name": "immich-db",
-      "image": "tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0",
-      "command": [
-        "postgres",
-        "-c",
-        "shared_preload_libraries=vectors.so",
-        "-c",
-        "search_path=\"$$user\", public, vectors",
-        "-c",
-        "logging_collector=on",
-        "-c",
-        "max_wal_size=2GB",
-        "-c",
-        "shared_buffers=512MB",
-        "-c",
-        "wal_compression=on"
-      ],
+      "image": "ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0",
       "environment": {
         "POSTGRES_PASSWORD": "${DB_PASSWORD}",
         "POSTGRES_USER": "tipi",
         "POSTGRES_DB": "immich",
-        "PG_DATA": "/var/lib/postgresql/data"
+        "PG_DATA": "/var/lib/postgresql/data",
+        "DB_STORAGE_TYPE": "HDD"
       },
       "volumes": [
         {
           "hostPath": "${APP_DATA_DIR}/data/db",
           "containerPath": "/var/lib/postgresql/data"
         }
-      ],
-      "healthCheck": {
-        "test": "pg_isready --dbname='${DB_DATABASE_NAME}' || exit 1; Chksum=\"$$(psql --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')\"; echo \"checksum failure count is $$Chksum\"; [ \"$$Chksum\" = '0' ] || exit 1",
-        "interval": "5m",
-        "retries": 5
-      }
+      ]
     }
   ]
 }
