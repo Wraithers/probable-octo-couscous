@@ -1,6 +1,6 @@
 services:
   suwayomi:
-    image: ghcr.io/suwayomi/tachidesk:v1.1.1
+    image: ghcr.io/suwayomi/tachidesk:v2.0.1833
     container_name: suwayomi
     user: "1000:1000"
     environment:
