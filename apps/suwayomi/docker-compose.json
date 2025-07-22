@@ -1,9 +1,8 @@
 {
-  "$schema": "../dynamic-compose-schema.json",
   "services": [
     {
       "name": "suwayomi",
-      "image": "ghcr.io/suwayomi/tachidesk:v2.0.1833",
+      "image": "ghcr.io/suwayomi/tachidesk:v1.1.1",
       "isMain": true,
       "internalPort": 4567,
       "environment": {
@@ -15,7 +14,8 @@
           "hostPath": "${APP_DATA_DIR}/data",
           "containerPath": "/home/suwayomi/.local/share/Tachidesk"
         }
-      ]
+      ],
+      "user": "1000:1000"
     }
   ]
 }
