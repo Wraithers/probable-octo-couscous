@@ -1,7 +1,7 @@
 services:
   mylar3:
     container_name: mylar3
-    image: lscr.io/linuxserver/mylar3:v0.7.1-ls84
+    image: lscr.io/linuxserver/mylar3:v0.8.2-ls209
     ports:
       - ${APP_PORT}:8090
     volumes:
