@@ -4,12 +4,13 @@ services:
     image: lscr.io/linuxserver/mylar3:v0.8.2-ls209
     ports:
       - ${APP_PORT}:8090
-    user: "1000:1000"
     volumes:
       - ${APP_DATA_DIR}/data/mylar3-config:/config
       - ${ROOT_FOLDER_HOST}/media/data/comics:/comics
       - ${ROOT_FOLDER_HOST}/media/downloads/mylar3:/downloads
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ=${TZ}
     restart: unless-stopped
     networks:
