@@ -1,6 +1,6 @@
 services:
   trilium:
-    image: triliumnext/notes:v0.95.0
+    image: triliumnext/trilium:v0.97.1
     container_name: trilium
     ports:
       - ${APP_PORT}:8080
