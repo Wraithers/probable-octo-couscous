@@ -23,7 +23,8 @@
           "hostPath": "${ROOT_FOLDER_HOST}/media/downloads/mylar3",
           "containerPath": "/downloads"
         }
-      ]
+      ],
+      "user": "1000:1000"
     }
   ]
 }
